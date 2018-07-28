@@ -12,16 +12,25 @@ pub struct Builder {
 }
 
 impl Builder {
+
+    /// Creates a new standard query
+    ///
+    /// Initially all sections are empty. You're expected to fill
+    /// the questions section with `add_question`
+    pub fn new(id: u16, recursion: bool) -> Builder {
+        Self::new_query(id, recursion, Opcode::StandardQuery)
+    }
+    
     /// Creates a new query
     ///
     /// Initially all sections are empty. You're expected to fill
     /// the questions section with `add_question`
-    pub fn new_query(id: u16, recursion: bool) -> Builder {
+    pub fn new_query(id: u16, recursion: bool, opcode: Opcode) -> Builder {
         let mut buf = Vec::with_capacity(512);
         let head = Header {
             id: id,
             query: true,
-            opcode: Opcode::StandardQuery,
+            opcode: opcode,
             authoritative: false,
             truncated: false,
             recursion_desired: recursion,
